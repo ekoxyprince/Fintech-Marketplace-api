@@ -1,0 +1,41 @@
+{
+  "name": "fintech-marketplace-api",
+  "version": "1.0.0",
+  "description": "An api for the fintech app and market place app we are working on",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ekoxyprince/fintech-marketplace.git"
+  },
+  "keywords": [
+    "fintech",
+    "marketplace",
+    "blockchain"
+  ],
+  "author": "Ekejiuba Prince",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ekoxyprince/fintech-marketplace/issues"
+  },
+  "homepage": "https://github.com/ekoxyprince/fintech-marketplace#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.0.0",
+    "install": "^0.13.0",
+    "jsonwebtoken": "^9.0.1",
+    "mongoose": "^7.3.4",
+    "twilio": "^4.14.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
