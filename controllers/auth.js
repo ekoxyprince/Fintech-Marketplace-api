@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken')
 const {tokenSecret} = require('../config')
 const tryCatch = require('../utils/trycatch')
 const {promisify} = require('util')
+const bcrypt = require('bcryptjs')
+const {jwtSecret,jwtExpiresIn} = require('../config')
 
 
 exports.postMobile = (req,res,next)=>{
@@ -16,8 +18,9 @@ exports.postMobile = (req,res,next)=>{
    const phone = `${countryCode}${mobile}`
    const otp = Math.floor(100000+(Math.random()*900000))
    const payload = {
-    phone:phone,
-    otp:otp
+    phone:mobile,
+    otp:otp,
+    code:countryCode
    } 
   const token = jwt.sign(payload,tokenSecret)
   smsMsg(`Your one time verification code is ${otp}`,phone)
@@ -42,15 +45,69 @@ exports.postVerifyOtp = tryCatch(async(req,res,next)=>{
    res.status(200).json(
     {
         success:true,
-        phone:decoded['phone']
+        phone:decoded['phone'],
+        countryCode:decoded['code']
     }
   )
 })
 
 exports.postSignup = (req,res,next)=>{
+    const {firstname,lastname,email,password,phone,countryCode} =  req.body
     const errors = validationResult(req)
     if(!errors.isEmpty()){
-        return res.status(422).json({info:errors})
+        return res.status(422).json({success:false,info:errors})
     }
-    res.json({success:true})
+    bcrypt.hash(password,12)
+    .then(hashedPassword=>{
+      return  User.create({
+          firstName:firstname,
+          lastName:lastname,
+          email:email,
+          password:hashedPassword,
+          phone:`${countryCode}${phone}`,
+          role:'Subscriber',
+          image:'/static/default_image.png',
+          account:{
+            nairaBalance:0,
+            cryptoBalance:0,
+            accountNumber:0,
+            transferPin:null,
+            portfolio:[]
+          },
+          beneficiaries:[]
+        })
+    })
+    .then(createdUser=>{
+        return res.status(200).json({success:true,info:createdUser})
+    })
+    .catch(error=>{
+        console.log(error)
+    })
+    
+}
+
+exports.postSignin = (req,res,next)=>{
+    const {email,password} = req.body
+    const errors = validationResult(req)
+    if(!errors.isEmpty()){
+        return res.status(422).json({success:false,info:errors})
+    }
+    User.findOne({email:email})
+    .then(foundUser=>{
+        if(!foundUser){
+            return res.status(422).json({success:false,info:{message:'Incorrect email address'}})
+        }else{
+           return bcrypt.compare(password,foundUser.password)
+            .then(doMatch=>{
+            if(!doMatch){
+           return res.status(422).json({success:false,info:{message:'Incorrect password'}})
+            }else{
+             const token = jwt.sign({_id:foundUser._id},jwtSecret,{expiresIn:jwtExpiresIn})
+             return res.status(200).json({success:true,info:{data:foundUser,accessToken:token}})
+            }
+        })}
+    })
+    .catch(error=>{
+        console.log(error)
+    })
 }

@@ -56,6 +56,24 @@ body('token')
  }
  return true
 })
+const userValidation = 
+check('email')
+.notEmpty().withMessage('The email field requires a value')
+.isEmail().withMessage('Please insert a valid email address')
+.custom((value,{req})=>{
+ return User.findOne({email:value})
+  .then(foundUser=>{
+    if(foundUser){
+        Promise.reject("An Account with this Email already exists")
+    }
+  })
+})
+.normalizeEmail()
+
+const phoneValidation = 
+body('phone')
+.notEmpty().withMessage('Phone number cannot be empty').trim()
+
 
 module.exports = 
 {
@@ -65,6 +83,7 @@ module.exports =
     phoneVerification:mobileValidation,
     countryCode:countryCodeValidation,
     token:tokenValidation,
-    otp:otpValidation
-
+    otp:otpValidation,
+    user:userValidation,
+    phone:phoneValidation
 }

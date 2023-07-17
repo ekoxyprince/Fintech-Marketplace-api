@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const authController = require('../controllers/auth')
-const {email,password,confirmpassword,phoneVerification,countryCode,otp,token} = require('../middlewares/validation')
+const {email,password,confirmpassword,phoneVerification,countryCode,otp,token,user,phone} = require('../middlewares/validation')
 
 router
 .route('/mobile_verification')
@@ -11,7 +11,10 @@ router
 .post([otp,token],authController.postVerifyOtp)
 router
 .route('/signup')
-.post([email,password,confirmpassword],
+.post([user,phone,password,confirmpassword],
     authController.postSignup)
+router
+.route('/signin')
+.post([email,password],authController.postSignin)
 
 module.exports = router
