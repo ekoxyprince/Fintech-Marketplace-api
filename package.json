@@ -1,0 +1,40 @@
+{
+  "name": "jjs-api",
+  "version": "1.0.0",
+  "description": "An api for jjs fintech app",
+  "main": "api-gateway.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-server1": "nodemon ./src/fintech/server.js",
+    "start-server2": "nodemon ./src/marketplace/server.js",
+    "start-gateway": "nodemon ./src/api-gateway.js",
+    "dev": "concurrently \"npm run start-server1 \" \"npm run start-server2 \" \"npm run start-gateway \""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jjs-currency/backend.git"
+  },
+  "keywords": [
+    "Fintech"
+  ],
+  "author": "Astrodev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jjs-currency/backend/issues"
+  },
+  "homepage": "https://github.com/jjs-currency/backend#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-validator": "^7.0.1",
+    "http-proxy": "^1.18.1",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "mongoose": "^8.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

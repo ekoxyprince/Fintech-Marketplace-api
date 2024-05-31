@@ -1,0 +1,62 @@
+const _ = require('mongoose')
+const _hook = require("../hooks/user.hook")
+
+const _schema = new _.Schema({
+    email:{
+        type:String,
+        required:true,
+        unique:true,
+    },
+    fullname:{
+        type:String,
+        required:true,
+        unique:true
+    },
+    phone:{
+        type:String,
+        required:true
+    },
+    password:{
+        type:String,
+        required:true
+    },
+    dateOfBirth:Date,
+    location:String,
+    role:{
+        type:String,
+        required:true,
+        default:'user'
+    },
+    userRole:String,
+    account:{
+        nairaBalance:{
+            type:Number,
+            required:true,
+            default:0.00
+        },
+        dollarBalance:{
+            type:Number,
+            required:true,
+            default:0.00
+        }
+    },
+    cryptoAssets:[
+        {
+            name:String,
+            slug:String,
+            value:String
+        }
+    ],
+    createdAt:{
+        type:Date,
+        required:true,
+        default:Date.now()
+    },
+    updatedAt:{
+        type:Date,
+        required:true,
+        default:Date.now()
+    }
+})
+_schema.pre("save",_hook.beforeSave)
+module.exports = _.model("User",_schema)
