@@ -23,3 +23,9 @@ exports.ValidationError = class ValidationError extends CustomError{
    this.code = 422
   }
 }
+exports.RequestError = class RequestError extends CustomError{
+  constructor(message,details){
+    super(message,details)
+   this.code = 400
+  }
+}

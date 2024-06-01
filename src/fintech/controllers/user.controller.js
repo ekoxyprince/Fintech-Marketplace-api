@@ -20,6 +20,17 @@ exports.updatePassword = catchAsync(async(req,res)=>{
         }
     })
 })
+exports.updatePin = catchAsync(async(req,res)=>{
+    const data = await req.user.updatePin(req.body)
+    res.json({
+        success:true,
+        code:200,
+        status:"success",
+        data:{
+            msg:"Pin updated!"
+        }
+    })
+})
 exports.updateDetails = catchAsync(async(req,res)=>{
     const data = await req.user.updateDetails(req.body)
     res.json({
@@ -30,4 +41,7 @@ exports.updateDetails = catchAsync(async(req,res)=>{
             msg:"Details updated!"
         }
     })
+})
+exports.sendMoneyToJJSAccount = catchAsync(async(req,res)=>{
+
 })

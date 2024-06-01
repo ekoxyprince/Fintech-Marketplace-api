@@ -1,13 +1,22 @@
 const router = require("express").Router()
 const auth = require("../middlewares/auth.middleware")
 const {user} = require("../middlewares/role.middleware")
-const _ = require("../controllers/user.controller")
+const controller = require("../controllers/user.controller")
+const result = require("../middlewares/validation.middleware")
+const _ = require("../validations/transaction.validation") 
 
 router
 .route("/details")
-.get(_.getUserDetails)
-.patch(_.updateDetails)
+.get(controller.getUserDetails)
+.patch(controller.updateDetails)
 router
 .route("/update_password")
-.patch(_.updatePassword)
+.patch(controller.updatePassword)
+router
+.route("/update_pin")
+.patch(controller.updatePin)
+router
+.route("/jjs_transfer")
+.post([_.transAmount,_.transPin,_.jjsTag,result])
+
 module.exports = router

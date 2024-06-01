@@ -1,5 +1,4 @@
-
-
+const User = require('../../database/models/user.model')
 
 module.exports = class UserService{
      constructor(instance){
@@ -9,6 +8,15 @@ module.exports = class UserService{
       try {
          this.instance['password'] = body['password']
          await this.instance.save()
+      } catch (error) {
+         throw new Error(error)
+      }
+     }
+     async updatePin(body){
+      try {
+         this.instance['pin'] = body['pin']
+         await this.instance.save()
+         console.log(this.instance)
       } catch (error) {
          throw new Error(error)
       }
@@ -25,6 +33,14 @@ module.exports = class UserService{
    } catch (error) {
     throw new Error(error)  
    }
+    }
+    static async findUserByTag(tag){
+     try {
+       const user = await User.findOne({phone:tag}).select({phone:1,fullname:1})
+       return user
+     } catch (error) {
+          throw new Error(error)
+     }
     }
 
 }

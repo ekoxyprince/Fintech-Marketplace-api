@@ -26,6 +26,7 @@ const _schema = new _.Schema({
     role:{
         type:String,
         required:true,
+        enum:['user','admin'],
         default:'user'
     },
     userRole:String,
@@ -58,7 +59,7 @@ const _schema = new _.Schema({
         required:true,
         default:Date.now()
     },
-    pin:Number,
+    pin:String,
     image:{
         type:String,
         required:true,

@@ -8,6 +8,12 @@ exports.beforeSave = async function(next){
      this.updatedAt = new Date()
      return next()
    }
+   if(this.isModified("pin")){
+    const hashedPin = await bcrypt.hash(this.pin,12)
+    this.pin = hashedPin
+    this.updatedAt = new Date()
+    return next()
+  }
    next()
   } catch (error) {
     return next(error)
