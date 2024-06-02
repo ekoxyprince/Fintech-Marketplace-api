@@ -1,4 +1,5 @@
 const User = require('../../database/models/user.model')
+const BankService = require("../transactionservices/banktransaction/bank.transaction")
 
 module.exports = class UserService{
      constructor(instance){
@@ -41,6 +42,16 @@ module.exports = class UserService{
      } catch (error) {
           throw new Error(error)
      }
+    }
+    async initiateJJSTransfer(body){
+      try {
+         const bankService = new BankService(this.instance)
+         const receiver = await User.findOne({phone:body.account_number})
+         const transaction = await bankService.sendToJJSAccount(receiver,body)
+         return transaction
+       } catch (error) {
+            throw new Error(error)
+       }
     }
 
 }

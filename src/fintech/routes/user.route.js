@@ -17,6 +17,6 @@ router
 .patch(controller.updatePin)
 router
 .route("/jjs_transfer")
-.post([_.transAmount,_.transPin,_.jjsTag,result])
+.post([_.transAmount,_.transPin,_.jjsTag,result],controller.sendMoneyToJJSAccount)
 
 module.exports = router

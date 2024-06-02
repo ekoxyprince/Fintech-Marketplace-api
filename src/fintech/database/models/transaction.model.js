@@ -11,19 +11,6 @@ const _schema = new _.Schema({
         enum:['crypto','bank'],
         required:[true,"Transaction type must be provided"]
     },
-    flow:{
-        type:String,
-        enum:['inflow','outflow'],
-        required:true
-    },
-    transactionFlow:{
-        type:String,
-        enum:['credit','debit'],
-        required:true,
-        default:function(){
-            return this.flow =="inflow"?"credit":"debit"
-        }
-    },
     transactionStatus:{
         type:String,
         enum:['pending','successful','failed','reversed'],
@@ -34,19 +21,28 @@ const _schema = new _.Schema({
         required:true,
     },
     senderDetails:{
-        accountNumber:String,
+        senderId:{
+            type:_.Schema.Types.ObjectId,
+            ref:'User',
+            required:function(){
+                return this.transactionType =="jjs transfer"
+            }
+        },
+        accountNumber:Number,
         provider:String,
-        accountName:Number,
+        accountName:String,
     },
     receiverDetails:{
-        accountNumber:String,
+        receiverId:{
+            type:_.Schema.Types.ObjectId,
+            ref:'User',
+            required:function(){
+                return this.transactionType =="jjs transfer"
+            }
+        },
+        accountNumber:Number,
         provider:String,
-        accountName:Number,
-    },
-    userDetails:{
-        type:_.Schema.Types.ObjectId,
-        ref:'User',
-        required:true
+        accountName:String,
     },
     createdAt:{
         type:Date,
@@ -57,5 +53,13 @@ const _schema = new _.Schema({
         type:Date,
         required:true,
         default:Date.now()
+    },
+    remark:String,
+    reference:{
+        type:String,
+        required:true,
+        unique:true
     }
 })
+
+module.exports = _.model("Transaction",_schema)

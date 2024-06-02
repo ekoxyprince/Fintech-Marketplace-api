@@ -43,5 +43,11 @@ exports.updateDetails = catchAsync(async(req,res)=>{
     })
 })
 exports.sendMoneyToJJSAccount = catchAsync(async(req,res)=>{
-
-})
+        const data = await req.user.initiateJJSTransfer(req.body)
+        res.json({
+            success:true,
+            code:200,
+            status:"success",
+            data:data
+        })
+    })
