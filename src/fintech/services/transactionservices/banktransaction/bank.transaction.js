@@ -2,6 +2,7 @@ const Transaction = require("../../../database/models/transaction.model")
 const {Mutex} = require("async-mutex")
 const mutex = new Mutex()
 const crypto = require('crypto') 
+const {RequestError} = require("../../../exceptions/errors")
 
 module.exports = class BankTransaction{
     constructor(user){
@@ -11,8 +12,8 @@ module.exports = class BankTransaction{
         const sender = this.user
          const release = await mutex.acquire()
         try {
-        sender.account['nairaBalance'] = sender.account['nairaBalance'] - Number(body.amount)
         receiver.account['nairaBalance'] = receiver.account['nairaBalance'] + Number(body.amount)
+        sender.account['nairaBalance'] = sender.account['nairaBalance'] - Number(body.amount)
         const send = await sender.save()
         const receive = await receiver.save()
         const transaction = await Transaction.create({
@@ -33,4 +34,27 @@ module.exports = class BankTransaction{
              release()
         }
     }
+    async getUserJJSTransactions(){
+        try {
+            const userTransactions = await Transaction
+            .find({$or:[{'senderDetails.senderId':this.user._id},{'receiverDetails.receiverId':this.user._id}],type:'jjs transfer'})
+            .sort('-createdAt')
+            return userTransactions
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
+   static async getTransaction(id){
+    try {
+        const transaction = await Transaction.findById(id)
+        if(!transaction) throw new RequestError("Invalid Transaction Id")
+        return transaction
+    } catch (error) {
+        if(error instanceof RequestError){
+            throw new RequestError(error)
+           }else{
+             throw new Error(error)
+           }
+    }
+   } 
 }

@@ -6,6 +6,9 @@ const result = require("../middlewares/validation.middleware")
 router
 .route("/tag/:account_number")
 .get([_.jjsTag,result],controller.findUserByTag)
+router
+.route("/transaction/:id")
+.get([_.transId,result],controller.findTransaction)
 
 
 module.exports = router

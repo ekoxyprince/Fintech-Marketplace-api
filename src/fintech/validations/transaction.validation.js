@@ -1,4 +1,4 @@
-const {body,check} = require("express-validator")
+const {body,check,param} = require("express-validator")
 const bcrypt = require("bcryptjs")
 const User = require("../database/models/user.model")
 
@@ -63,3 +63,12 @@ exports.transAmount = body("amount")
         return true
     }
 })
+exports.transId = param("id")
+.notEmpty()
+.withMessage("Enter a valid Transaction Id")
+.isAlphanumeric()
+.withMessage("Enter a valid Transaction Id")
+.isLength({min:24})
+.withMessage("Enter a valid Transaction Id")
+
+

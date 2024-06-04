@@ -18,5 +18,8 @@ router
 router
 .route("/jjs_transfer")
 .post([_.transAmount,_.transPin,_.jjsTag,result],controller.sendMoneyToJJSAccount)
+router
+.route("/jjs_transactions")
+.get(controller.getJJSTransactions)
 
 module.exports = router

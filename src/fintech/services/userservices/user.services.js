@@ -53,5 +53,14 @@ module.exports = class UserService{
             throw new Error(error)
        }
     }
+    async getJJSTransactions(){
+      try {
+         const bankService = new BankService(this.instance)
+         const transactions =await bankService.getUserJJSTransactions()
+         return transactions
+      } catch (error) {
+         throw new Error(error)
+      }
+    }
 
 }

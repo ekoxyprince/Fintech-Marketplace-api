@@ -3,7 +3,13 @@ const proxy = httpProxy.createProxyServer()
 const server1 = "http://localhost:3000"
 const server2 = "http://localhost:3001"
 const app = require("express")()
+const cors = require("cors")
+const helmet = require("helmet")
+const logger = require("morgan")
 
+app.use(cors())
+app.use(helmet())
+app.use(logger("dev"))
 app.use("/api/fintech",(req,res)=>{
     console.log(`Incoming request from /api/fintech ${req.method} ${req.url}`)
     proxy.web(req,res,{target:server1},(err)=>{
