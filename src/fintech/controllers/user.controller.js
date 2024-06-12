@@ -60,3 +60,12 @@ exports.getJJSTransactions = catchAsync(async(req,res)=>{
         data:data
     })
 })
+exports.sendMoneyToBankAccount = catchAsync(async(req,res)=>{
+    const data = await req.user.initiateBankTransfer(req.body)
+    res.json({
+        success:true,
+        code:200,
+        status:"success",
+        data:data
+    })
+})

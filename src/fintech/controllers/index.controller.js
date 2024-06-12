@@ -1,5 +1,5 @@
 const UserService = require('../services/userservices/user.services')
-const BankService = require('../services/transactionservices/banktransaction/bank.transaction')
+const BankService = require('../services/transactionservices/banktransaction/intrabank.transaction')
 const catchAsync = require("../utilities/trycatch")
 
 exports.findUserByTag = catchAsync(async(req,res)=>{

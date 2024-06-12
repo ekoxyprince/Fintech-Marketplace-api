@@ -1,5 +1,7 @@
 const User = require('../../database/models/user.model')
-const BankService = require("../transactionservices/banktransaction/bank.transaction")
+const BankService = require("../transactionservices/banktransaction/intrabank.transaction")
+const InterbankService = require("../transactionservices/banktransaction/interbank.transaction")
+const {RequestError} = require("../../exceptions/errors")
 
 module.exports = class UserService{
      constructor(instance){
@@ -59,6 +61,16 @@ module.exports = class UserService{
          const transactions =await bankService.getUserJJSTransactions()
          return transactions
       } catch (error) {
+         throw new Error(error)
+      }
+    }
+    async initiateBankTransfer(body){
+      try {
+         const interbankService = new InterbankService(this.instance)
+         const transaction = await interbankService.initiateInterTransfer(body) 
+         return transaction
+      } catch (error) {
+         if(error instanceof RequestError) throw new RequestError(error)
          throw new Error(error)
       }
     }

@@ -64,7 +64,16 @@ const _schema = new _.Schema({
         type:String,
         required:true,
         default:`${server}/static/default.png`
-    }
+    },
+    beneficiaries:[
+        {
+            id:String,
+            bankCode:String,
+            bankName:String,
+            bankAccountNo:String,
+            receipientCode:String
+        }
+    ]
 })
 _schema.pre("save",_hook.beforeSave)
 module.exports = _.model("User",_schema)
