@@ -12,10 +12,10 @@ module.exports = class BankTransaction{
         const sender = this.user
          const release = await mutex.acquire()
         try {
-        receiver.account['nairaBalance'] = receiver.account['nairaBalance'] + Number(body.amount)
-        sender.account['nairaBalance'] = sender.account['nairaBalance'] - Number(body.amount)
-        const send = await sender.save()
-        const receive = await receiver.save()
+            sender.account['nairaBalance'] -= Number(body.amount)
+            const send = await sender.save()
+             receiver.account['nairaBalance'] += Number(body.amount)
+             const receive = await receiver.save()
         const transaction = await Transaction.create({
          amount:body.amount,transactionStatus:"successful",
          type:"jjs transfer",senderDetails:{

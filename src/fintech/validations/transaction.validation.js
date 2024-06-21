@@ -42,6 +42,12 @@ exports.jjsTag = check("account_number")
 .isLength({min:9})
 .withMessage("Enter a valid JJS account number length")
 .custom((value,{req})=>{
+    if(value == req.user.instance.phone){
+        throw new Error("Invalid transaction")
+    }
+    return true
+})
+.custom((value,{req})=>{
    return User.findOne({phone:value})
     .then(user=>{
         if(!user){
