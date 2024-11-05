@@ -19,10 +19,12 @@ module.exports = class AuthService {
         last_name: data.fullname.split(" ")[1],
         email: data.email,
       });
-      console.log(resp);
-      const user = await User.create(data);
+      const user = await User.create({
+        ...data,
+        quidaxId: resp.data.id,
+        quidaxSn: resp.data.sn,
+      });
     } catch (error) {
-      console.log(error);
       if (error instanceof AuthorizationError) {
         throw new AuthorizationError(error);
       }
