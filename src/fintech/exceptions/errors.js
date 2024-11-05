@@ -1,31 +1,30 @@
-
-class CustomError extends Error{
-  constructor(message,details){
-    super(message)
-    this.details = details
+class CustomError extends Error {
+  constructor(message, details) {
+    super(message);
+    this.details = details;
   }
 }
-exports.AuthenticationError = class AuthenticationError extends CustomError{
-   constructor(message,details){
-     super(message,details)
-    this.code = 401
-   }
-}
-exports.AuthorizationError = class ValidationError extends CustomError{
-  constructor(message,details){
-    super(message,details)
-   this.code = 403
+exports.AuthenticationError = class AuthenticationError extends CustomError {
+  constructor(message, details) {
+    super(message, details);
+    this.code = 401;
   }
-}
-exports.ValidationError = class ValidationError extends CustomError{
-  constructor(message,details){
-    super(message,details)
-   this.code = 422
+};
+exports.AuthorizationError = class ValidationError extends CustomError {
+  constructor(message, details) {
+    super(message, details);
+    this.code = 403;
   }
-}
-exports.RequestError = class RequestError extends CustomError{
-  constructor(message,details){
-    super(message,details)
-   this.code = 400
+};
+exports.ValidationError = class ValidationError extends CustomError {
+  constructor(message, details) {
+    super(message, details);
+    this.code = 422;
   }
-}
+};
+exports.RequestError = class RequestError extends CustomError {
+  constructor(message, details) {
+    super(message, details);
+    this.code = 400;
+  }
+};
