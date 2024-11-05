@@ -25,6 +25,7 @@ class WalletService {
       return resp.data;
     } catch (error) {
       if (error.status == 403) {
+        console.log(error);
         throw new AuthorizationError("Unauthorized request found!");
       } else {
         throw new Error(error);
